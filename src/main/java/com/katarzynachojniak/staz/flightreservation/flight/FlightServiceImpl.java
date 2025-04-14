@@ -56,9 +56,14 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDto getFlightById(Long id) {
-        Flight flight = flightRepository.findById(id).orElse(null);
+    public FlightDto getFlightDtoById(Long id) {
+        Flight flight = getFlightById(id);
 
         return flightMapper.toDto(flight);
+    }
+
+    @Override
+    public Flight getFlightById(Long id) {
+        return flightRepository.findById(id).orElse(null);
     }
 }

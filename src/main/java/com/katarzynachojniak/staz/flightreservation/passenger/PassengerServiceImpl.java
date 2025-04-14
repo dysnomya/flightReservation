@@ -1,7 +1,5 @@
 package com.katarzynachojniak.staz.flightreservation.passenger;
 
-import com.katarzynachojniak.staz.flightreservation.flight.Flight;
-import com.katarzynachojniak.staz.flightreservation.flight.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +8,10 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
-    private final FlightRepository flightRepository;
 
-    public PassengerServiceImpl(PassengerRepository passengerRepository, PassengerMapper passengerMapper, FlightRepository flightRepository) {
+    public PassengerServiceImpl(PassengerRepository passengerRepository, PassengerMapper passengerMapper) {
         this.passengerRepository = passengerRepository;
         this.passengerMapper = passengerMapper;
-        this.flightRepository = flightRepository;
     }
 
     @Override
@@ -27,10 +23,15 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public PassengerDto getPassengerById(Long id) {
-        Passenger passenger = passengerRepository.findById(id).orElse(null);
+    public PassengerDto getPassengerDtoById(Long id) {
+        Passenger passenger = getPassengerById(id);
 
         return passengerMapper.toDto(passenger);
+    }
+
+    @Override
+    public Passenger getPassengerById(Long id) {
+        return passengerRepository.findById(id).orElse(null);
     }
 
     @Override

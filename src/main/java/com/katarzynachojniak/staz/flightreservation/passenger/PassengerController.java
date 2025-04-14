@@ -1,7 +1,5 @@
 package com.katarzynachojniak.staz.flightreservation.passenger;
 
-import com.katarzynachojniak.staz.flightreservation.flight.FlightDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +28,8 @@ public class PassengerController {
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
     public ResponseEntity<PassengerDto> getPassengerById(@PathVariable Long id) {
-        PassengerDto passengerDto = passengerService.getPassengerById(id);
+        PassengerDto passengerDto = passengerService.getPassengerDtoById(id);
 
         if (passengerDto != null) {
             return ResponseEntity.ok(passengerDto);
@@ -43,7 +40,6 @@ public class PassengerController {
 
 
     @PutMapping("/{id}")
-    @ResponseBody
     public ResponseEntity<PassengerDto> updatePassenger(@PathVariable Long id, @RequestBody PassengerDto dto) {
 
         PassengerDto passengerDto = passengerService.updatePassenger(id, dto);

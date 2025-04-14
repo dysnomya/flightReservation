@@ -18,6 +18,18 @@ public class Passenger {
     private String email;
     private String phoneNumber;
 
+
+    public Passenger() {
+
+    }
+
+    public Passenger(String name, String surname, String email, String phoneNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Long getId() {
         return id;
     }

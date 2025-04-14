@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Repository
-public interface FlightRepository extends PagingAndSortingRepository<Flight, Long>, CrudRepository<Flight, Long> {
+public interface FlightRepository extends CrudRepository<Flight, Long> {
 //    Flight findById(long id);
     List<Flight> findByFlightNumber(String flightNumber);
     List<Flight> findByDeparturePlace(String departurePlace);

@@ -5,7 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PassengerRepository extends PagingAndSortingRepository<Passenger, Long>, CrudRepository<Passenger, Long> {
+public interface PassengerRepository extends CrudRepository<Passenger, Long> {
   Passenger getPassengerById(Long id);
 //  Passenger findById(Long id);
 }

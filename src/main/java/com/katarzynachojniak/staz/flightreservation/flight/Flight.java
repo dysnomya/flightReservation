@@ -9,6 +9,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Entity representing a flight in the flight reservation system.
+ *
+ * <p>This class stores core flight information including the flight number, departure and arrival places,
+ * flight duration, and whether it is a round trip. It also maintains relationships with the associated
+ * {@link Seat} and {@link Reservation} entities.</p>
+ *
+ * <p>Behavior:</p>
+ * <ul>
+ *     <li>When a flight is deleted, all associated seats and reservations are also removed due to cascading.</li>
+ *     <li>Seats can be dynamically added or removed from a flight.</li>
+ *     <li>Reservations are also linked and managed through this class.</li>
+ * </ul>
+ */
 @Entity
 public class Flight {
 
@@ -26,11 +41,8 @@ public class Flight {
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Seat> seats = new HashSet<>();
 
-    @OneToMany(mappedBy = "flight", orphanRemoval = true)
-    private List<Reservation> reservations = new ArrayList<>();
 
-
-    protected Flight() {}
+    public Flight() {}
 
     public Flight(String flightNumber, String departurePlace, String arrivalPlace, int durationMinutes, Boolean roundTrip, Set<Seat> seats) {
         this.departurePlace = departurePlace;
@@ -101,11 +113,4 @@ public class Flight {
         seats.remove(seat);
     }
 
-    public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
-    }
-
-    public void removeReservation(Reservation reservation) {
-        reservations.remove(reservation);
-    }
 }

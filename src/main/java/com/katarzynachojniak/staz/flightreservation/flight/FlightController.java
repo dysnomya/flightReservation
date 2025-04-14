@@ -1,14 +1,10 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
-import org.apache.catalina.mapper.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/flights")
@@ -32,7 +28,7 @@ public class FlightController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FlightDto> getFlightById(@PathVariable Long id) {
-        FlightDto flight = flightService.getFlightById(id);
+        FlightDto flight = flightService.getFlightDtoById(id);
 
         if (flight != null) {
             return ResponseEntity.ok(flight);

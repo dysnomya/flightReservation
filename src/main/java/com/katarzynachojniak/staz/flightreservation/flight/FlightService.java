@@ -9,5 +9,7 @@ public interface FlightService {
     void deleteFlight(Long id);
 
     List<FlightDto> getAllFlights();
-    FlightDto getFlightById(Long id);
+    FlightDto getFlightDtoById(Long id);
+    Flight getFlightById(Long id);
+
 }
