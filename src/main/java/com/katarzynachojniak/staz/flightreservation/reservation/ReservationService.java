@@ -4,8 +4,9 @@ import java.util.List;
 
 public interface ReservationService {
     ReservationDto createReservation(ReservationCreateDto reservationCreateDto);
-    ReservationDto getReservationById(Long id);
+    ReservationDto getReservationDtoById(Long id);
+    Reservation getReservationById(Long id);
     List<ReservationDto> getAllReservations();
-    ReservationDto updateReservation(Long id, ReservationDto reservationDto);
+    ReservationDto updateReservation(Long id, ReservationCreateDto dto);
     void deleteReservation(Long id);
 }

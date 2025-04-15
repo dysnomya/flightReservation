@@ -28,7 +28,7 @@ public class ReservationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservationDto> getReservationById(@PathVariable Long id) {
-        ReservationDto reservationDto = reservationService.getReservationById(id);
+        ReservationDto reservationDto = reservationService.getReservationDtoById(id);
 
         if (reservationDto != null) {
             return ResponseEntity.ok(reservationDto);
@@ -38,7 +38,7 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservationDto> updateReservation(@PathVariable Long id, @RequestBody ReservationDto dto) {
+    public ResponseEntity<ReservationDto> updateReservation(@PathVariable Long id, @RequestBody ReservationCreateDto dto) {
         ReservationDto reservationDto = reservationService.updateReservation(id, dto);
 
         if (reservationDto != null) {

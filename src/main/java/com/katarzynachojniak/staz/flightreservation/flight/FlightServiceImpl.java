@@ -1,14 +1,8 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
-import com.katarzynachojniak.staz.flightreservation.seat.Seat;
-import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
-import com.katarzynachojniak.staz.flightreservation.seat.SeatRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
@@ -30,13 +24,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDto updateFlight(long id, FlightDto dto) {
+    public FlightDto updateFlight(String flightNumber, FlightDto dto) {
 
-        Flight existingFlight = flightRepository.findById(id).orElse(null);
-
-        if (existingFlight == null) {
-            return null;
-        }
+        Flight existingFlight = getFlightByFlightNumber(flightNumber);
 
         flightMapper.partialUpdate(dto, existingFlight);
 
@@ -45,25 +35,25 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void deleteFlight(Long id) {
-        flightRepository.deleteById(id);
+    public void deleteFlight(String flightNumber) {
+        flightRepository.deleteByFlightNumber(flightNumber);
     }
 
     @Override
     public List<FlightDto> getAllFlights() {
-        List<Flight> flights = (List<Flight>) flightRepository.findAll();
+        List<Flight> flights = flightRepository.findAll();
         return flightMapper.toDto(flights);
     }
 
     @Override
-    public FlightDto getFlightDtoById(Long id) {
-        Flight flight = getFlightById(id);
+    public FlightDto getFlightDtoByFlightNumber(String flightNumber) {
+        Flight flight = getFlightByFlightNumber(flightNumber);
 
         return flightMapper.toDto(flight);
     }
 
     @Override
-    public Flight getFlightById(Long id) {
-        return flightRepository.findById(id).orElse(null);
+    public Flight getFlightByFlightNumber(String flightNumber) {
+        return flightRepository.getByFlightNumber(flightNumber);
     }
 }

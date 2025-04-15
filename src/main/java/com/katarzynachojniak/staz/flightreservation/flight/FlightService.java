@@ -5,11 +5,11 @@ import java.util.List;
 public interface FlightService {
 
     FlightDto createFlight(FlightDto flightDto);
-    FlightDto updateFlight(long id, FlightDto flightDto);
-    void deleteFlight(Long id);
+    FlightDto updateFlight(String flightNumber, FlightDto flightDto);
+    void deleteFlight(String flightNumber);
 
     List<FlightDto> getAllFlights();
-    FlightDto getFlightDtoById(Long id);
-    Flight getFlightById(Long id);
+    FlightDto getFlightDtoByFlightNumber(String flightNumber);
+    Flight getFlightByFlightNumber(String flightNumber);
 
 }

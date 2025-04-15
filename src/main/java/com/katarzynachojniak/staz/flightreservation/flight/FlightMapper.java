@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {SeatMapper.class})
 public interface FlightMapper {
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "flightNumber")
     Flight toEntity(FlightDto flightDto);
 
     @AfterMapping
@@ -16,12 +16,11 @@ public interface FlightMapper {
         flight.getSeats().forEach(seat -> seat.setFlight(flight));
     }
 
-    @Mapping(target = "id")
+    @Mapping(target = "flightNumber")
     FlightDto toDto(Flight flight);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Flight partialUpdate(FlightDto flightDto, @MappingTarget Flight flight);
-
 
     List<Flight> toEntity(List<FlightDto> flightDto);
 

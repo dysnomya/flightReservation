@@ -28,11 +28,9 @@ import java.util.Set;
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private long id;
-
     private String flightNumber;
+
     private String departurePlace;
     private String arrivalPlace;
     private int durationMinutes;
@@ -53,8 +51,8 @@ public class Flight {
         this.seats = seats;
     }
 
-    public long getId() {
-        return id;
+    public String getFlightNumber() {
+        return flightNumber;
     }
 
     public String getDeparturePlace() {
@@ -67,10 +65,6 @@ public class Flight {
 
     public int getDurationMinutes() {
         return durationMinutes;
-    }
-
-    public String getFlightNumber() {
-        return flightNumber;
     }
 
     public boolean isRoundTrip() {

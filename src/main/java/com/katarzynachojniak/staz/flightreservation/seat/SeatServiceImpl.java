@@ -31,4 +31,9 @@ public class SeatServiceImpl implements SeatService {
 
         return seatRepository.findSeatBySeatNumberAndFlight(seatNumber, flight);
     }
+
+    @Override
+    public Seat save(Seat seat) {
+        return seatRepository.save(seat);
+    }
 }
