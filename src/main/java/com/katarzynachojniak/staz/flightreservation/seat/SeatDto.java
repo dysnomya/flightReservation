@@ -1,5 +1,7 @@
 package com.katarzynachojniak.staz.flightreservation.seat;
 
+import com.katarzynachojniak.staz.flightreservation.reservation.Reservation;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -8,13 +10,19 @@ import java.util.Objects;
  */
 public class SeatDto implements Serializable {
     private final String seatNumber;
+    private final Boolean available;
 
-    public SeatDto(String seatNumber) {
+    public SeatDto(String seatNumber, Reservation reservation) {
         this.seatNumber = seatNumber;
+        this.available = reservation != null;
     }
 
     public String getSeatNumber() {
         return seatNumber;
+    }
+
+    public Boolean getAvailable() {
+        return available;
     }
 
     @Override

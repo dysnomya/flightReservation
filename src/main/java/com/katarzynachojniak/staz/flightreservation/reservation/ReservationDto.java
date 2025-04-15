@@ -1,8 +1,6 @@
 package com.katarzynachojniak.staz.flightreservation.reservation;
 
-import com.katarzynachojniak.staz.flightreservation.flight.FlightDto;
 import com.katarzynachojniak.staz.flightreservation.passenger.PassengerDto;
-import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,37 +10,31 @@ import java.util.Objects;
  */
 public class ReservationDto implements Serializable {
     private final Long id;
-    private final FlightDto flight;
-    private final SeatDto seat;
+    private final String flightNumber;
+    private final String seatNumber;
     private final PassengerDto passenger;
-    private final Boolean hasDeparted;
 
-    public ReservationDto(Long id, FlightDto flight, SeatDto seat, PassengerDto passenger, Boolean hasDeparted) {
+    public ReservationDto(Long id, String flightNumber, String seatNumber, PassengerDto passenger) {
         this.id = id;
-        this.flight = flight;
-        this.seat = seat;
+        this.flightNumber = flightNumber;
+        this.seatNumber = seatNumber;
         this.passenger = passenger;
-        this.hasDeparted = hasDeparted;
     }
 
     public Long getId() {
         return id;
     }
 
-    public FlightDto getFlight() {
-        return flight;
+    public String getFlightNumber() {
+        return flightNumber;
     }
 
-    public SeatDto getSeat() {
-        return seat;
+    public String getSeatNumber() {
+        return seatNumber;
     }
 
     public PassengerDto getPassenger() {
         return passenger;
-    }
-
-    public Boolean getHasDeparted() {
-        return hasDeparted;
     }
 
     @Override
@@ -51,24 +43,22 @@ public class ReservationDto implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ReservationDto entity = (ReservationDto) o;
         return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.flight, entity.flight) &&
-                Objects.equals(this.seat, entity.seat) &&
-                Objects.equals(this.passenger, entity.passenger) &&
-                Objects.equals(this.hasDeparted, entity.hasDeparted);
+                Objects.equals(this.flightNumber, entity.flightNumber) &&
+                Objects.equals(this.seatNumber, entity.seatNumber) &&
+                Objects.equals(this.passenger, entity.passenger);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, flight, seat, passenger, hasDeparted);
+        return Objects.hash(id, flightNumber, seatNumber, passenger);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "flight = " + flight + ", " +
-                "seat = " + seat + ", " +
-                "passenger = " + passenger + ", " +
-                "hasDeparted = " + hasDeparted + ")";
+                "flightFlightNumber = " + flightNumber + ", " +
+                "seatSeatNumber = " + seatNumber + ", " +
+                "passenger = " + passenger + ")";
     }
 }

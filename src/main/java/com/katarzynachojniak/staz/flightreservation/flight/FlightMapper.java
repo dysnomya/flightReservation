@@ -26,5 +26,4 @@ public interface FlightMapper {
 
     List<FlightDto> toDto(List<Flight> flight);
 
-
 }
