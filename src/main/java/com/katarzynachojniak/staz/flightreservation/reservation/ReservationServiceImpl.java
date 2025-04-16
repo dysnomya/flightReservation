@@ -3,12 +3,16 @@ package com.katarzynachojniak.staz.flightreservation.reservation;
 import com.katarzynachojniak.staz.flightreservation.flight.Flight;
 import com.katarzynachojniak.staz.flightreservation.flight.FlightMapper;
 import com.katarzynachojniak.staz.flightreservation.flight.FlightService;
+import com.katarzynachojniak.staz.flightreservation.mail.MailService;
 import com.katarzynachojniak.staz.flightreservation.passenger.Passenger;
 import com.katarzynachojniak.staz.flightreservation.passenger.PassengerMapper;
 import com.katarzynachojniak.staz.flightreservation.passenger.PassengerService;
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatService;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,21 +24,17 @@ public class ReservationServiceImpl implements ReservationService {
     private final PassengerService passengerService;
     private final FlightService flightService;
     private final SeatService seatService;
-    private final FlightMapper flightMapper;
-    private final SeatMapper seatMapper;
-    private final PassengerMapper passengerMapper;
+    private final MailService mailService;
 
     public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,
-                                  PassengerService passengerService, FlightService flightService, SeatService seatService,
-                                  FlightMapper flightMapper, SeatMapper seatMapper, PassengerMapper passengerMapper) {
+                                  PassengerService passengerService, FlightService flightService,
+                                  SeatService seatService, MailService mailService) {
         this.reservationRepository = reservationRepository;
         this.reservationMapper = reservationMapper;
         this.passengerService = passengerService;
         this.flightService = flightService;
         this.seatService = seatService;
-        this.flightMapper = flightMapper;
-        this.seatMapper = seatMapper;
-        this.passengerMapper = passengerMapper;
+        this.mailService = mailService;
     }
 
     @Override
@@ -45,6 +45,8 @@ public class ReservationServiceImpl implements ReservationService {
 
         Reservation reservation = new Reservation(flight, seat, passenger, dto.getHasDeparted());
         Reservation savedReservation = reservationRepository.save(reservation);
+
+        mailService.sendReservationCreateMail(savedReservation);
 
         return reservationMapper.toDto(savedReservation);
     }

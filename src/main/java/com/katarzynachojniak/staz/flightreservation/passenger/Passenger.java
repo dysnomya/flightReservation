@@ -1,8 +1,16 @@
 package com.katarzynachojniak.staz.flightreservation.passenger;
 
+import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
+/**
+ * Entity representing a passenger in the flight reservation system.
+ *
+ * <p>It contains basic personal information such as name, surname, email and phone number of a passenger.
+ *
+ * <p>The passenger is uniquely identified by an auto-generated ID.</p>
+ */
 @Entity
 public class Passenger {
 
@@ -11,16 +19,22 @@ public class Passenger {
     @Column(nullable = false)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String surname;
 
+    @Column(nullable = false)
     @Email
     private String email;
+
+    @Column
     private String phoneNumber;
 
 
     public Passenger() {
-
+        // required by JPA
     }
 
     public Passenger(String name, String surname, String email, String phoneNumber) {

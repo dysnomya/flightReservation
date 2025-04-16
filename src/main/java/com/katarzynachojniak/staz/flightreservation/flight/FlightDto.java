@@ -1,54 +1,69 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * DTO for {@link Flight}
+ * DTO for transferring flight data between layers (API, service, etc.).
+ * Immutable and serializable.
  */
 public class FlightDto implements Serializable {
 
     @NotNull(message = "Flight Number is required")
     private final String flightNumber;
+
     @NotNull(message = "Departure place is required")
-    private final String departurePlace;
+    private final String from;
+
     @NotNull(message = "Arrival place is required")
-    private final String arrivalPlace;
-    private final int durationMinutes; // duration is 0 by default because of int usage
-    private final boolean roundTrip; // round trip is false by default because of boolean usage
+    private final String to;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private final LocalDateTime departureDate;
+
+    private final Integer durationInMinutes;
+
+    private final Boolean roundTrip;
+
     private final Set<SeatDto> seats;
 
-    public FlightDto(String flightNumber, String departurePlace, String arrivalPlace, int durationMinutes, boolean roundTrip, Set<SeatDto> seats) {
+
+    // constructor, getters, equals/hashCode
+
+    public FlightDto(String flightNumber, String from, String to, LocalDateTime departureDate, Integer durationInMinutes, Boolean roundTrip, Set<SeatDto> seats) {
         this.flightNumber = flightNumber;
-        this.departurePlace = departurePlace;
-        this.arrivalPlace = arrivalPlace;
-        this.durationMinutes = durationMinutes;
+        this.from = from;
+        this.to = to;
+        this.departureDate = departureDate;
+        this.durationInMinutes = durationInMinutes;
         this.roundTrip = roundTrip;
-        this.seats = seats == null ? new HashSet<>() : seats;
+        this.seats = seats;
     }
 
     public String getFlightNumber() {
         return flightNumber;
     }
 
-    public String getDeparturePlace() {
-        return departurePlace;
+    public String getFrom() {
+        return from;
     }
 
-    public String getArrivalPlace() {
-        return arrivalPlace;
+    public String getTo() {
+        return to;
     }
 
-    public int getDurationMinutes() {
-        return durationMinutes;
+    public Integer getDurationInMinutes() {
+        return durationInMinutes;
     }
 
-    public boolean getRoundTrip() {
+    public Boolean getRoundTrip() {
         return roundTrip;
     }
 
@@ -71,11 +86,15 @@ public class FlightDto implements Serializable {
     public String toString() {
         return "FlightDto{" +
                 "flightNumber='" + flightNumber + '\'' +
-                ", departurePlace='" + departurePlace + '\'' +
-                ", arrivalPlace='" + arrivalPlace + '\'' +
-                ", durationMinutes=" + durationMinutes +
+                ", departurePlace='" + from + '\'' +
+                ", arrivalPlace='" + to + '\'' +
+                ", durationMinutes=" + durationInMinutes +
                 ", roundTrip=" + roundTrip +
                 ", seats=" + seats +
                 '}';
+    }
+
+    public LocalDateTime getDepartureDate() {
+        return departureDate;
     }
 }

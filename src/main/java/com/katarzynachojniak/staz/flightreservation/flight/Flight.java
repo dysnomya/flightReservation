@@ -5,25 +5,19 @@ import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
 /**
  * Entity representing a flight in the flight reservation system.
  *
- * <p>This class stores core flight information including the flight number, departure and arrival places,
- * flight duration, and whether it is a round trip. It also maintains relationships with the associated
- * {@link Seat} and {@link Reservation} entities.</p>
+ * <p>Includes details like flight number, departure and arrival locations, departure date, flight duration,
+ * and whether it is a round trip. It also contains a set of associated
+ * {@link Seat} entities.</p>
  *
- * <p>Behavior:</p>
- * <ul>
- *     <li>When a flight is deleted, all associated seats and reservations are also removed due to cascading.</li>
- *     <li>Seats can be dynamically added or removed from a flight.</li>
- *     <li>Reservations are also linked and managed through this class.</li>
- * </ul>
+ * <p>When a flight is deleted, all associated {@link Seat} entities are also removed due to cascading.</p>
  */
 @Entity
 public class Flight {
@@ -34,28 +28,37 @@ public class Flight {
     private String flightNumber;
 
     @Column(nullable = false)
-    private String departurePlace;
+    private String departureLocation;
 
     @Column(nullable = false)
-    private String arrivalPlace;
+    private String arrivalLocation;
 
     @Column(nullable = false)
-    private int durationMinutes;
+    private LocalDateTime departureDate;
+
+    @Column
+    private int durationInMinutes;
 
     @Column(nullable = false)
     private boolean roundTrip;
 
+    /**
+     * The set of seats associated with this flight. Maintains a one-to-many relationship
+     * with the {@code Seat} entity. When flight is removed, all seats are also removed due to cascading.
+     */
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Seat> seats = new HashSet<>();
 
-
     public Flight() {
+        // required by JPA
     }
 
-    public Flight(String flightNumber, String departurePlace, String arrivalPlace, int durationMinutes, Boolean roundTrip, Set<Seat> seats) {
-        this.departurePlace = departurePlace;
-        this.arrivalPlace = arrivalPlace;
-        this.durationMinutes = durationMinutes;
+
+    public Flight(String flightNumber, String departureLocation, String arrivalLocation, LocalDateTime departureDate, int durationInMinutes, Boolean roundTrip, Set<Seat> seats) {
+        this.departureLocation = departureLocation;
+        this.arrivalLocation = arrivalLocation;
+        this.departureDate = departureDate;
+        this.durationInMinutes = durationInMinutes;
         this.flightNumber = flightNumber;
         this.roundTrip = roundTrip;
         this.seats = seats;
@@ -65,16 +68,16 @@ public class Flight {
         return flightNumber;
     }
 
-    public String getDeparturePlace() {
-        return departurePlace;
+    public String getDepartureLocation() {
+        return departureLocation;
     }
 
-    public String getArrivalPlace() {
-        return arrivalPlace;
+    public String getArrivalLocation() {
+        return arrivalLocation;
     }
 
-    public int getDurationMinutes() {
-        return durationMinutes;
+    public int getDurationInMinutes() {
+        return durationInMinutes;
     }
 
     public boolean isRoundTrip() {
@@ -89,16 +92,16 @@ public class Flight {
         this.flightNumber = flightNumber;
     }
 
-    public void setDeparturePlace(String departurePlace) {
-        this.departurePlace = departurePlace;
+    public void setDepartureLocation(String departurePlace) {
+        this.departureLocation = departurePlace;
     }
 
-    public void setArrivalPlace(String arrivalPlace) {
-        this.arrivalPlace = arrivalPlace;
+    public void setArrivalLocation(String arrivalPlace) {
+        this.arrivalLocation = arrivalPlace;
     }
 
-    public void setDurationMinutes(int durationMinutes) {
-        this.durationMinutes = durationMinutes;
+    public void setDurationInMinutes(int durationMinutes) {
+        this.durationInMinutes = durationMinutes;
     }
 
     public void setRoundTrip(boolean roundTrip) {
@@ -109,6 +112,14 @@ public class Flight {
         this.seats = seats;
     }
 
+    public LocalDateTime getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
+    }
+
     public void addSeat(Seat seat) {
         seats.add(seat);
     }
@@ -116,5 +127,4 @@ public class Flight {
     public void removeSeat(Seat seat) {
         seats.remove(seat);
     }
-
 }
