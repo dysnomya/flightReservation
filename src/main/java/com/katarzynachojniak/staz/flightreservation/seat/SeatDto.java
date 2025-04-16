@@ -14,7 +14,7 @@ public class SeatDto implements Serializable {
 
     public SeatDto(String seatNumber, Reservation reservation) {
         this.seatNumber = seatNumber;
-        this.available = reservation != null;
+        this.available = reservation == null;
     }
 
     public String getSeatNumber() {

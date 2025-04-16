@@ -3,6 +3,7 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 import com.katarzynachojniak.staz.flightreservation.reservation.Reservation;
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,20 +28,29 @@ import java.util.Set;
 @Entity
 public class Flight {
 
+    @NotNull
     @Id
     @Column(nullable = false)
     private String flightNumber;
 
+    @Column(nullable = false)
     private String departurePlace;
+
+    @Column(nullable = false)
     private String arrivalPlace;
+
+    @Column(nullable = false)
     private int durationMinutes;
+
+    @Column(nullable = false)
     private boolean roundTrip;
 
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Seat> seats = new HashSet<>();
 
 
-    public Flight() {}
+    public Flight() {
+    }
 
     public Flight(String flightNumber, String departurePlace, String arrivalPlace, int durationMinutes, Boolean roundTrip, Set<Seat> seats) {
         this.departurePlace = departurePlace;

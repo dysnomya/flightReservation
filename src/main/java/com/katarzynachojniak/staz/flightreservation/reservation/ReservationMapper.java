@@ -21,10 +21,10 @@ public interface ReservationMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Reservation partialUpdate(ReservationDto reservationDto, @MappingTarget Reservation reservation);
 
-    @Mapping(source = "seatNumber", target = "seat.seatNumber")
-    @Mapping(source = "flightNumber", target = "flight.flightNumber")
     List<Reservation> toEntity(List<ReservationDto> reservationDto);
 
     @InheritInverseConfiguration(name = "toEntity")
     List<ReservationDto> toDto(List<Reservation> reservation);
+
+
 }

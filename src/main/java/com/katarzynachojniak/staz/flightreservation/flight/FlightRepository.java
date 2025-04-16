@@ -8,12 +8,12 @@ import java.util.List;
 
 
 @Repository
-public interface FlightRepository extends CrudRepository<Flight, Long> {
+public interface FlightRepository extends CrudRepository<Flight, String> {
 
     void deleteByFlightNumber(String flightNumber);
 
     @Override
     List<Flight> findAll();
 
-    Flight getByFlightNumber(String flightNumber);
+    Flight findFlightByFlightNumber(String flightNumber);
 }

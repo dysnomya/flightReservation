@@ -1,9 +1,12 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
+@Transactional
 @Service
 public class FlightServiceImpl implements FlightService {
     private final FlightRepository flightRepository;
@@ -54,6 +57,6 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flight getFlightByFlightNumber(String flightNumber) {
-        return flightRepository.getByFlightNumber(flightNumber);
+        return flightRepository.findById(flightNumber).orElse(null);
     }
 }
