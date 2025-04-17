@@ -13,14 +13,7 @@
 
 Aby uruchomić system rezerwacji lotów na swoim komputerze, postępuj według jednej z poniższych opcji:
 
-### 1. Uruchomienie przez plik jar
-
-Znajdując się w katalogu głównym aplikacji (/flightReservation), uruchom poniższe polecenie:
-```bash
-java -jar target/flightReservation-1.0.0.jar
-```
-
-### 2. Instalacja zależności i uruchomienie aplikacji
+### 1. Instalacja zależności i uruchomienie aplikacji
 
 W terminalu katalogu głównego aplikacji (/flightReservation) uruchom poniższe polecenie:
 ```bash
@@ -31,6 +24,14 @@ Następnie użyj poniższego polecenia, aby uruchomić aplikację:
 ```bash
 .\mvnw spring-boot:run
 ```
+
+### 2. Uruchomienie przez plik jar ()
+
+Znajdując się w katalogu, w którym znajduje się plik jar, uruchom poniższe polecenie:
+```bash
+java -jar flightReservation-1.0.0.jar
+```
+
 
 ## Jak używać aplikacji?
 Po uruchomieniu aplikacji (zarówno przez plik JAR, jak i Mavena), aplikacja będzie dostępna lokalnie pod adresem [http://localhost:8080](http://localhost:8080)
