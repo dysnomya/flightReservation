@@ -44,9 +44,10 @@ curl http://localhost:8080/flights/NY1001
 
 ### POST
 
-| Endpoint      | Opis                                              |
-|---------------|---------------------------------------------------|
-| `POST /flights` | Tworzy nowy lot na podstawie przekazanych danych. |
+| Endpoint                              | Opis                                                |
+|---------------------------------------|-----------------------------------------------------|
+| `POST /flights`                       | Tworzy nowy lot na podstawie przekazanych danych.   |
+| `POST /flights/{FLIGHT NUMBER}/seats` | Dodaj siedzenie do lotu wskazanego przez numer lotu |
 
 **Przykładowe dane wejściowe (`JSON`):**
 ```JSON
@@ -90,13 +91,29 @@ curl -X POST http://localhost:8080/flights \
 }'
 ```
 
+**Przykładowe dane wejściowe (`JSON`) dla dodawania siedzeń:**
+```JSON
+{
+    "seatNumber": "Z3"
+}
+```
+**Przykładowe wykonanie curl:**
+```bash
+curl -X POST http://localhost:8080/flights/NY1001/seats \
+  -H "Content-Type: application/json" \
+  -d '{
+    "seatNumber": "Z3"
+}'
+```
+
+
 ### PUT
 
-| Endpoint                       | Opis                                            |
-|--------------------------------|-------------------------------------------------|
-| `PUT /flights/{FLIGHT NUMBER}` | Aktualizuje dane lotu częściowo lub całkowicie. |
+| Endpoint                                | Opis                                            |
+|-----------------------------------------|-------------------------------------------------|
+| `PUT /flights/{FLIGHT NUMBER}`          | Aktualizuje dane lotu częściowo lub całkowicie. |
 
-**Przykładowe dane wejściowe (`JSON`):**
+**Przykładowe dane wejściowe (`JSON`)**
 ```JSON
 {
     "durationInMinutes": 435,
@@ -115,15 +132,30 @@ curl -X PUT http://localhost:8080/flights/NY1001 \
 
 ### DELETE
 
-| Endpoint                          | Opis                         |
-|-----------------------------------|------------------------------|
-| `DELETE /flights/{FLIGHT NUMBER}` | Usuwa lot o podanym numerze. |
+| Endpoint                                | Opis                          |
+|-----------------------------------------|-------------------------------|
+| `DELETE /flights/{FLIGHT NUMBER}`       | Usuwa lot o podanym numerze.  |
+| `DELETE /flights/{FLIGHT NUMBER}/seats` | Usuwa podane siedzenie z lotu |
 
 **Przykładowe wykonanie curl:**
 ```bash
 curl -X DELETE http://localhost:8080/flights/NY1001
 ```
 
+**Przykładowe dane wejściowe (`JSON`) dla usuwania siedzeń:**
+```JSON
+{
+    "seatNumber": "Z3"
+}
+```
+**Przykładowe wykonanie curl:**
+```bash
+curl -X DELETE http://localhost:8080/flights/NY1001/seats \
+  -H "Content-Type: application/json" \
+  -d '{
+    "seatNumber": "Z3"
+}'
+```
 
 
 

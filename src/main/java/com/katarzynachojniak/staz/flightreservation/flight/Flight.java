@@ -49,6 +49,13 @@ public class Flight {
     @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Seat> seats = new HashSet<>();
 
+    /**
+     * The set of reservations associated with this flight. Maintains a one-to-many relationship
+     * with the {@code Reservation} entity. When flight is removed, all reservations are also removed due to cascading.
+     */
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Reservation> reservations = new HashSet<>();
+
     public Flight() {
         // required by JPA
     }
@@ -76,16 +83,24 @@ public class Flight {
         return arrivalLocation;
     }
 
+    public LocalDateTime getDepartureDate() {
+        return departureDate;
+    }
+
     public Integer getDurationInMinutes() {
         return durationInMinutes;
     }
 
-    public Boolean isRoundTrip() {
+    public Boolean getRoundTrip() {
         return roundTrip;
     }
 
     public Set<Seat> getSeats() {
         return seats;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
     }
 
     public void setFlightNumber(String flightNumber) {
@@ -100,11 +115,11 @@ public class Flight {
         this.arrivalLocation = arrivalPlace;
     }
 
-    public void setDurationInMinutes(int durationMinutes) {
+    public void setDurationInMinutes(Integer durationMinutes) {
         this.durationInMinutes = durationMinutes;
     }
 
-    public void setRoundTrip(boolean roundTrip) {
+    public void setRoundTrip(Boolean roundTrip) {
         this.roundTrip = roundTrip;
     }
 
@@ -112,12 +127,12 @@ public class Flight {
         this.seats = seats;
     }
 
-    public LocalDateTime getDepartureDate() {
-        return departureDate;
-    }
-
     public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     public void addSeat(Seat seat) {

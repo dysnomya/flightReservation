@@ -2,6 +2,7 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
+import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -19,6 +20,7 @@ class FlightServiceImplTest {
     private FlightRepository flightRepository;
     private FlightMapper flightMapper;
     private FlightServiceImpl flightService;
+    private SeatMapper seatMapper;
 
     private FlightDto flightDto;
     private Flight flight;
@@ -30,7 +32,7 @@ class FlightServiceImplTest {
     void setUp() {
         flightRepository = mock(FlightRepository.class);
         flightMapper = mock(FlightMapper.class);
-        flightService = new FlightServiceImpl(flightRepository, flightMapper);
+        flightService = new FlightServiceImpl(flightRepository, flightMapper, seatMapper);
 
         // create example objects
         seatsDto.add(new SeatDto("A1", null));

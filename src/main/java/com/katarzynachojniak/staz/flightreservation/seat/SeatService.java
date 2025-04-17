@@ -42,4 +42,13 @@ public interface SeatService {
      * @return the saved {@link Seat} entity
      */
     Seat save(Seat seat);
+
+    /**
+     * Set a flight that a seat is in
+     * @param seat a seat that is getting added to a flight
+     * @param flight a flight that a seat is getting added to
+     * @return new Seat with updated flight
+     */
+    Seat setFlightForSeat(Seat seat, Flight flight);
+
 }

@@ -1,5 +1,9 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
+import com.katarzynachojniak.staz.flightreservation.seat.Seat;
+import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
+import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
+import com.katarzynachojniak.staz.flightreservation.seat.SeatService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository flightRepository;
     private final FlightMapper flightMapper;
+    private final SeatMapper seatMapper;
+    private final SeatService seatService;
 
     /**
      * Constructs a new {@link FlightServiceImpl} with the provided repository and mapper.
@@ -27,9 +33,11 @@ public class FlightServiceImpl implements FlightService {
      * @param flightRepository the repository for performing flight database operations
      * @param flightMapper the mapper used to convert between {@link Flight} and {@link FlightDto}
      */
-    public FlightServiceImpl(FlightRepository flightRepository, FlightMapper flightMapper) {
+    public FlightServiceImpl(FlightRepository flightRepository, FlightMapper flightMapper, SeatMapper seatMapper, SeatService seatService) {
         this.flightRepository = flightRepository;
         this.flightMapper = flightMapper;
+        this.seatMapper = seatMapper;
+        this.seatService = seatService;
     }
 
     /**
@@ -124,5 +132,48 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Flight getFlightByFlightNumber(String flightNumber) {
         return flightRepository.findById(flightNumber).orElse(null);
+    }
+
+    /**
+     * Adds a seat to a list of seats on a flight
+     * @param flightNumber the flight number of the flight to add seat to
+     * @param seatDto seat DTO of a seat to add to flight
+     * @return as a {@link FlightDto}, or null if no flight is found
+     */
+    @Override
+    public FlightDto addSeat(String flightNumber, SeatDto seatDto) {
+        Flight flight = getFlightByFlightNumber(flightNumber);
+        if (flight == null) {
+            return null;
+        }
+
+        Seat seat = seatMapper.toEntity(seatDto);
+        Seat newSeat = seatService.setFlightForSeat(seat, flight);
+
+        flight.addSeat(newSeat);
+        Flight savedFlight = flightRepository.save(flight);
+
+        return flightMapper.toDto(savedFlight);
+    }
+
+    /**
+     * Removes a seat from a list of seats on a flight - and because of orphan removing also from db
+     * @param flightNumber the flight number of the flight to remove a seat from
+     * @param seatDto seat DTO of a seat to remove from a flight
+     * @return as a {@link FlightDto}, or null if no flight is found
+     */
+    @Override
+    public FlightDto removeSeat(String flightNumber, SeatDto seatDto) {
+        Flight flight = getFlightByFlightNumber(flightNumber);
+        if (flight == null) {
+            return null;
+        }
+
+        Seat seat = seatService.getSeatBySeatNumberAndFlight(seatDto.getSeatNumber(), flight);
+
+        flight.removeSeat(seat);
+        Flight savedFlight = flightRepository.save(flight);
+
+        return flightMapper.toDto(savedFlight);
     }
 }

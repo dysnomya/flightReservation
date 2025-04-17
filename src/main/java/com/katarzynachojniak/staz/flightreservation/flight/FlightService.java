@@ -1,5 +1,7 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
+import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
+
 import java.util.List;
 
 /**
@@ -65,4 +67,19 @@ import java.util.List;
      */
     void deleteFlight(String flightNumber);
 
+   /**
+    * Adds a seat to a flight by its flight number
+    * @param flightNumber the flight number of the flight to add a seat to
+    * @param seatDto seat DTO of a seat to add to flight
+    * @return as a {@link FlightDto}, or {@code null} if no flight is found with the given flight number
+    */
+    FlightDto addSeat(String flightNumber, SeatDto seatDto);
+
+    /**
+     * Removes a seat from a flight
+     * @param flightNumber the flight number of the flight to remove seat from
+     * @param seatDto seat DTO of a seat to add to flight
+     * @return as a {@link FlightDto}, or {@code null} if no flight is found with the given flight number
+     */
+   FlightDto removeSeat(String flightNumber, SeatDto seatDto);
 }

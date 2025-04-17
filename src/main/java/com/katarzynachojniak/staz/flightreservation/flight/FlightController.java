@@ -1,5 +1,6 @@
 package com.katarzynachojniak.staz.flightreservation.flight;
 
+import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,4 +101,31 @@ public class FlightController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Adds a seat to a flight
+     * @param id flight number
+     * @param seatDto new seat data
+     * @return updated flight if found, or HTTP 404 (Not Found)
+     */
+    @PostMapping("/{id}/seats")
+    public ResponseEntity<FlightDto> addSeat(@PathVariable String id, @RequestBody SeatDto seatDto) {
+        FlightDto flightDto = flightService.addSeat(id, seatDto);
+
+        if (flightDto != null) {
+            return ResponseEntity.ok(flightDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}/seats")
+    public ResponseEntity<FlightDto> deleteSeat(@PathVariable String id, @RequestBody SeatDto seatDto) {
+        FlightDto flightDto = flightService.removeSeat(id, seatDto);
+
+        if (flightDto != null) {
+            return ResponseEntity.ok(flightDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
