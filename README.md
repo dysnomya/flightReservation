@@ -1,5 +1,35 @@
 # System rezerwacji lotów
 
+<!-- TOC -->
+* [System rezerwacji lotów](#system-rezerwacji-lotów)
+  * [Co zrobiłam?](#co-zrobiłam)
+  * [Jak uruchomić projekt?](#jak-uruchomić-projekt)
+    * [1. Instalacja zależności i uruchomienie aplikacji](#1-instalacja-zależności-i-uruchomienie-aplikacji)
+    * [2. Uruchomienie przez plik jar ()](#2-uruchomienie-przez-plik-jar-)
+  * [Jak używać aplikacji?](#jak-używać-aplikacji)
+  * [Loty (`/flights`)](#loty-flights)
+    * [Edge Cases](#edge-cases)
+      * [Edge Case 1. Usunięcie lotu, który ma już przypisane rezerwacje](#edge-case-1-usunięcie-lotu-który-ma-już-przypisane-rezerwacje)
+    * [GET](#get)
+    * [POST](#post)
+    * [PUT](#put)
+    * [DELETE](#delete)
+  * [PASAŻEROWIE (`/passengers`)](#pasażerowie-passengers)
+    * [GET](#get-1)
+    * [POST](#post-1)
+    * [PUT](#put-1)
+    * [DELETE](#delete-1)
+  * [REZERWACJE](#rezerwacje)
+    * [Edge Cases](#edge-cases-1)
+      * [Edge Case 1. Rezerwacja na lot, który już się odbył](#edge-case-1-rezerwacja-na-lot-który-już-się-odbył)
+      * [Edge Case 2. Rezerwacja na już zajęte miejsce](#edge-case-2-rezerwacja-na-już-zajęte-miejsce)
+      * [Edge Case 3. Próba anulowania rezerwacji na locie, który już się odbył](#edge-case-3-próba-anulowania-rezerwacji-na-locie-który-już-się-odbył)
+    * [GET](#get-2)
+    * [POST](#post-2)
+    * [PUT](#put-2)
+    * [DELETE](#delete-2)
+<!-- TOC -->
+
 ## Co zrobiłam?
 - Stworzyłam system rezerwacji lotów w oparciu o architekturę REST API.
 - Użyłam frameworka Spring Boot do stworzenia backendu aplikacji, obsługującego CRUD (Create, Read, Update, Delete) dla lotów, pasażerów i rezerwacji. 
@@ -272,7 +302,7 @@ aplikacja powinna zwrócić błąd 400 Bad Request z odpowiednim komunikatem. Na
 Flight has already departed...
 ```
 
-### Edge Case 2. Rezerwacja na już zajęte miejsce
+#### Edge Case 2. Rezerwacja na już zajęte miejsce
 
 Jeśli użytkownik próbuje zarezerwować miejsce, które jest już zajęte przez inną osobę,
 system powinien zwrócić błąd z informacją, że dane miejsce jest niedostępne. Przykładowy komunikat:
@@ -281,7 +311,7 @@ system powinien zwrócić błąd z informacją, że dane miejsce jest niedostęp
 Constraint violation: Duplicate or invalid reference.
 ```
 
-### Edge Case 3. Próba anulowania rezerwacji na locie, który już się odbył
+#### Edge Case 3. Próba anulowania rezerwacji na locie, który już się odbył
 Jeśli użytkownik próbuje anulować rezerwację na locie, który już się odbył,
 system powinien zwrócić błąd, informując, że rezerwacje na przeszłe loty nie mogą zostać anulowane.
 
