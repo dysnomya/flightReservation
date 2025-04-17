@@ -37,10 +37,10 @@ public class Flight {
     private LocalDateTime departureDate;
 
     @Column
-    private int durationInMinutes;
+    private Integer durationInMinutes;
 
     @Column(nullable = false)
-    private boolean roundTrip;
+    private Boolean roundTrip;
 
     /**
      * The set of seats associated with this flight. Maintains a one-to-many relationship
@@ -54,7 +54,7 @@ public class Flight {
     }
 
 
-    public Flight(String flightNumber, String departureLocation, String arrivalLocation, LocalDateTime departureDate, int durationInMinutes, Boolean roundTrip, Set<Seat> seats) {
+    public Flight(String flightNumber, String departureLocation, String arrivalLocation, LocalDateTime departureDate, Integer durationInMinutes, Boolean roundTrip, Set<Seat> seats) {
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
         this.departureDate = departureDate;
@@ -76,11 +76,11 @@ public class Flight {
         return arrivalLocation;
     }
 
-    public int getDurationInMinutes() {
+    public Integer getDurationInMinutes() {
         return durationInMinutes;
     }
 
-    public boolean isRoundTrip() {
+    public Boolean isRoundTrip() {
         return roundTrip;
     }
 

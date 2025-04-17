@@ -41,6 +41,10 @@ public class PassengerServiceImpl implements PassengerService {
      */
     @Override
     public PassengerDto createPassenger(PassengerDto passengerDto) {
+        if (passengerDto == null) {
+            throw new IllegalArgumentException("Passenger data cannot be null");
+        }
+
         Passenger passenger = passengerMapper.toEntity(passengerDto);
         Passenger savedPassenger = passengerRepository.save(passenger);
 

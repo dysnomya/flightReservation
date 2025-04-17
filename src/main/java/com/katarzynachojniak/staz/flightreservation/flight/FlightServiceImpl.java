@@ -43,6 +43,10 @@ public class FlightServiceImpl implements FlightService {
      */
     @Override
     public FlightDto createFlight(FlightDto flightDto) {
+        if (flightDto == null) {
+            throw new IllegalArgumentException("Flight data cannot be null");
+        }
+
         Flight flight = flightMapper.toEntity(flightDto);
         Flight savedFlight = flightRepository.save(flight);
 

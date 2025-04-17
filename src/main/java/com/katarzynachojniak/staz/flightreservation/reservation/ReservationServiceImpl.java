@@ -68,6 +68,10 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     public ReservationDto createReservation(ReservationCreateDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("Reservation data cannot be null");
+        }
+
         Passenger passenger = passengerService.getPassengerById(dto.getPassengerId());
         Flight flight = flightService.getFlightByFlightNumber(dto.getFlightNumber());
         Seat seat = seatService.getSeatBySeatNumberAndFlight(dto.getSeatNumber(), flight);
