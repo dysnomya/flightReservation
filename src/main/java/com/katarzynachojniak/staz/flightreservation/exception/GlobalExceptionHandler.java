@@ -1,5 +1,6 @@
 package com.katarzynachojniak.staz.flightreservation.exception;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,5 +44,23 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Map<String, String> handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getConstraintViolations()
+                .forEach(cv -> errors.put(cv.getPropertyPath().toString(), cv.getMessage()));
+        return errors;
+    }
+
+    @ExceptionHandler(FlightAlreadyDepartedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleFlightAlreadyDepartedException(FlightAlreadyDepartedException ex) {
+        return ex.getMessage();
     }
 }

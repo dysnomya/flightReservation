@@ -3,7 +3,9 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 import com.katarzynachojniak.staz.flightreservation.reservation.Reservation;
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -22,6 +24,7 @@ import java.util.Set;
 @Entity
 public class Flight {
 
+    @Pattern(regexp = "^[A-Z]{2,3}[0-9]+$")
     @NotNull
     @Id
     @Column(nullable = false)
@@ -33,13 +36,12 @@ public class Flight {
     @Column(nullable = false)
     private String arrivalLocation;
 
-    @Column(nullable = false)
+    @NotNull
+    @FutureOrPresent(message = "Flight departure time must be in the future or present")
     private LocalDateTime departureDate;
 
-    @Column
     private Integer durationInMinutes;
 
-    @Column(nullable = false)
     private Boolean roundTrip;
 
     /**

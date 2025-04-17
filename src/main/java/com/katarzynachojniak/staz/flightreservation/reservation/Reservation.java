@@ -87,10 +87,4 @@ public class Reservation {
     public void setHasDeparted(Boolean hasDeparted) {
         this.hasDeparted = hasDeparted;
     }
-
-    /**
-     * TODO
-     * trying to delete flight when its on a reservation
-     * 2025-04-17T13:21:07.780+02:00 ERROR 20868 --- [flightReservation] [nio-8080-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.TransientObjectException: persistent instance references an unsaved transient instance of 'com.katarzynachojniak.staz.flightreservation.flight.Flight' (save the transient instance before flushing)] with root cause
-     */
 }

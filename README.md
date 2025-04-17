@@ -6,25 +6,44 @@
 - Klasa Flight została rozbudowana o możliwość przypisania miejsc siedzących, co pozwala na monitorowanie dostępności poszczególnych miejsc w samolocie.
 - Klasa Reservation umożliwia tworzenie rezerwacji, przypisując pasażerowi miejsce, lot i umożliwiając późniejsze modyfikacje.
 - Dodałam walidację dla danych wejściowych, a także odpowiednią obsługę błędów i wyjątków.
-- Wykonałam obszerne testy jednostkowe z wykorzystaniem biblioteki JUnit 5 oraz mockito dla FlightService oraz FlightController.
+- Wykonałam parę testów jednostkowych z wykorzystaniem biblioteki JUnit 5 oraz mockito dla klasy FlightService.
+- Dodałam funkcjonalność ustawiania we wszystkich rezerwacjacg danego lotu, że wylot się odbył.
 
 ## Jak uruchomić projekt?
 
-Aby uruchomić system rezerwacji lotów na swoim komputerze, postępuj według poniższych kroków:
+Aby uruchomić system rezerwacji lotów na swoim komputerze, postępuj według jednej z poniższych opcji:
 
-1. Instalacja zależności `./mvnw clean install`
-2. Uruchom aplikację Spring Boot: `./mvnw spring-boot:run`
-3. Aplikacja powinna wystartować na porcie 8080 (domyślnie).
-4. Testowanie aplikacji:
-   - Po uruchomieniu serwera możesz zacząć testować endpointy za pomocą Postman lub cURL.
-   - Oto przykładowe operacje na REST API:
-     - Tworzenie nowego lotu: POST /flights
-     - Dodawanie nowego pasażera: POST /passengers
-     - Rezerwowanie miejsca: POST /reservations
-     - Odczytywanie lotów: GET /flights
-     - Usuwanie rezerwacji: DELETE /reservations/{reservationId}
+### 1. Uruchomienie przez plik jar
+
+Znajdując się w katalogu głównym aplikacji (/flightReservation), uruchom poniższe polecenie:
+```bash
+java -jar target/flightReservation-1.0.0.jar
+```
+
+### 2. Instalacja zależności i uruchomienie aplikacji
+
+W terminalu katalogu głównego aplikacji (/flightReservation) uruchom poniższe polecenie:
+```bash
+.\mvnw clean install
+```
+
+Następnie użyj poniższego polecenia, aby uruchomić aplikację:
+```bash
+.\mvnw spring-boot:run
+```
+
+## Jak używać aplikacji?
+Po uruchomieniu aplikacji (zarówno przez plik JAR, jak i Mavena), aplikacja będzie dostępna lokalnie pod adresem [http://localhost:8080](http://localhost:8080)
+<br>
+Możesz teraz testować REST API za pomocą narzędzi takich jak Postman czy curl. Poniżej przedstawione są wszystkie opcje użycia, jakie zawiera aplikacja.
 
 ## Loty (`/flights`)
+
+### Edge Cases
+
+#### Edge Case 1. Usunięcie lotu, który ma już przypisane rezerwacje
+
+W przypadku, gdy użytkownik próbuje usunąć lot, który ma przypisane rezerwacje, system usunie wszystkie rezerwacje związane z danym lotem
 
 ### GET
 
@@ -242,6 +261,33 @@ curl -X DELETE http://localhost:8080/passengers/1
 
 ## REZERWACJE
 
+### Edge Cases
+
+#### Edge Case 1. Rezerwacja na lot, który już się odbył
+
+Jeśli użytkownik próbuje zarezerwować miejsce na locie, który już się odbył,
+aplikacja powinna zwrócić błąd 400 Bad Request z odpowiednim komunikatem. Na przykład:
+```terminaloutput
+Flight has already departed...
+```
+
+### Edge Case 2. Rezerwacja na już zajęte miejsce
+
+Jeśli użytkownik próbuje zarezerwować miejsce, które jest już zajęte przez inną osobę,
+system powinien zwrócić błąd z informacją, że dane miejsce jest niedostępne. Przykładowy komunikat:
+
+```terminaloutput
+Constraint violation: Duplicate or invalid reference.
+```
+
+### Edge Case 3. Próba anulowania rezerwacji na locie, który już się odbył
+Jeśli użytkownik próbuje anulować rezerwację na locie, który już się odbył,
+system powinien zwrócić błąd, informując, że rezerwacje na przeszłe loty nie mogą zostać anulowane.
+
+```terminaloutput
+You cannot cancel a reservation on a flight that has already departed
+```
+
 ### GET
 
 | Endpoint                | Przykład                                                | Opis                                           |
@@ -288,9 +334,10 @@ curl -X POST http://localhost:8080/reservations \
 
 ### PUT
 
-| Endpoint                 | Opis                                                                                                        |
-|--------------------------|-------------------------------------------------------------------------------------------------------------|
-| `PUT /reservations/{ID}` | Umożliwia aktualizację danych rezerwacji, np. zmiana miejsca, lotu, pasażera czy tego czy pasażer wyleciał. |
+| Endpoint                                     | Opis                                                                                                        |
+|----------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `PUT /reservations/{ID}`                     | Umożliwia aktualizację danych rezerwacji, np. zmiana miejsca, lotu, pasażera czy tego czy pasażer wyleciał. |
+| `PUT /reservations/departed/{FLIGHT NUMBER}` | Ustawia we wszystkich rezerwacjach danego lotu, że wylot się odbył                                          |
 
 **Przykładowe dane wejściowe (`JSON`):**
 ```JSON
@@ -300,12 +347,18 @@ curl -X POST http://localhost:8080/reservations \
 ```
 **Przykładowe wykonanie curl:**
 ```bash
-curl -X PUT http://localhost:8080/reservations/RES12345 \
+curl -X PUT http://localhost:8080/reservations/1 \
   -H "Content-Type: application/json" \
   -d '{
   "seatNumber": "B1"
 }'
 ```
+
+**Przykładowe wykonanie dla ustawiania odbycia lotu:**
+```bash
+curl -X PUT http://localhost:8080/reservations/departed/NY1001
+```
+
 
 ### DELETE
 
@@ -315,5 +368,5 @@ curl -X PUT http://localhost:8080/reservations/RES12345 \
 
 **Przykładowe wykonanie curl:**
 ```bash
-curl -X DELETE http://localhost:8080/reservations/RES12345
+curl -X DELETE http://localhost:8080/reservations/1
 ```

@@ -7,7 +7,6 @@ import com.katarzynachojniak.staz.flightreservation.seat.SeatService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class FlightServiceImpl implements FlightService {
      * Constructs a new {@link FlightServiceImpl} with the provided repository and mapper.
      *
      * @param flightRepository the repository for performing flight database operations
-     * @param flightMapper the mapper used to convert between {@link Flight} and {@link FlightDto}
+     * @param flightMapper     the mapper used to convert between {@link Flight} and {@link FlightDto}
      */
     public FlightServiceImpl(FlightRepository flightRepository, FlightMapper flightMapper, SeatMapper seatMapper, SeatService seatService) {
         this.flightRepository = flightRepository;

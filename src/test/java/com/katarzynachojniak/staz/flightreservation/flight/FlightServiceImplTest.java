@@ -3,17 +3,19 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
+import com.katarzynachojniak.staz.flightreservation.seat.SeatService;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.OptimisticLockingFailureException;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class FlightServiceImplTest {
@@ -21,6 +23,7 @@ class FlightServiceImplTest {
     private FlightMapper flightMapper;
     private FlightServiceImpl flightService;
     private SeatMapper seatMapper;
+    private SeatService seatService;
 
     private FlightDto flightDto;
     private Flight flight;
@@ -32,7 +35,7 @@ class FlightServiceImplTest {
     void setUp() {
         flightRepository = mock(FlightRepository.class);
         flightMapper = mock(FlightMapper.class);
-        flightService = new FlightServiceImpl(flightRepository, flightMapper, seatMapper);
+        flightService = new FlightServiceImpl(flightRepository, flightMapper, seatMapper, seatService);
 
         // create example objects
         seatsDto.add(new SeatDto("A1", null));
@@ -95,25 +98,17 @@ class FlightServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> flightService.createFlight(null));
         verify(flightMapper, never()).toEntity((FlightDto) any());
         verify(flightRepository, never()).save(any());
+        verify(flightMapper, never()).toDto(flight);
     }
 
     @Test
-    void updateFlight() {
-    }
+    void testCreateFlight_WrongFlightNumberFormat() {
+        when(flightMapper.toEntity(flightDto)).thenThrow(ConstraintViolationException.class);
 
-    @Test
-    void deleteFlight() {
-    }
 
-    @Test
-    void getAllFlights() {
-    }
-
-    @Test
-    void getFlightDtoByFlightNumber() {
-    }
-
-    @Test
-    void getFlightByFlightNumber() {
+        assertThrows(ConstraintViolationException.class, () -> flightService.createFlight(flightDto));
+        verify(flightMapper, times(1)).toEntity(flightDto);
+        verify(flightRepository, never()).save(any());
+        verify(flightMapper, never()).toDto(flight);
     }
 }

@@ -3,10 +3,10 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatDto;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -16,6 +16,7 @@ import java.util.Set;
 public class FlightDto implements Serializable {
 
     @NotNull(message = "Flight Number is required")
+    @Pattern(regexp = "^[A-Z]{2,3}[0-9]+$", message = "Flight Number pattern is not correct")
     private final String flightNumber;
 
     @NotNull(message = "Departure place is required")
@@ -25,6 +26,7 @@ public class FlightDto implements Serializable {
     private final String to;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @NotNull(message = "Departure Date is required")
     private final LocalDateTime departureDate;
 
     private final Integer durationInMinutes;

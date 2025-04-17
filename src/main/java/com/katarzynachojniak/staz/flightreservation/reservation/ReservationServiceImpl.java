@@ -1,20 +1,16 @@
 package com.katarzynachojniak.staz.flightreservation.reservation;
 
+import com.katarzynachojniak.staz.flightreservation.exception.FlightAlreadyDepartedException;
 import com.katarzynachojniak.staz.flightreservation.flight.Flight;
-import com.katarzynachojniak.staz.flightreservation.flight.FlightMapper;
 import com.katarzynachojniak.staz.flightreservation.flight.FlightService;
 import com.katarzynachojniak.staz.flightreservation.mail.MailService;
 import com.katarzynachojniak.staz.flightreservation.passenger.Passenger;
-import com.katarzynachojniak.staz.flightreservation.passenger.PassengerMapper;
 import com.katarzynachojniak.staz.flightreservation.passenger.PassengerService;
 import com.katarzynachojniak.staz.flightreservation.seat.Seat;
-import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatService;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -72,8 +68,15 @@ public class ReservationServiceImpl implements ReservationService {
             throw new IllegalArgumentException("Reservation data cannot be null");
         }
 
+
+
         Passenger passenger = passengerService.getPassengerById(dto.getPassengerId());
         Flight flight = flightService.getFlightByFlightNumber(dto.getFlightNumber());
+
+        if (flight.getDepartureDate().isBefore(LocalDateTime.now())) {
+            throw new FlightAlreadyDepartedException("Flight has already departed...");
+        }
+
         Seat seat = seatService.getSeatBySeatNumberAndFlight(dto.getSeatNumber(), flight);
 
         Reservation reservation = new Reservation(flight, seat, passenger, dto.getHasDeparted());
@@ -133,7 +136,7 @@ public class ReservationServiceImpl implements ReservationService {
      * @return the updated {@link ReservationDto}, or {@code null} if the reservation is not found
      */
     @Override
-    public ReservationDto updateReservation(Long id, ReservationCreateDto dto) { // TODO
+    public ReservationDto updateReservation(Long id, ReservationCreateDto dto) {
         Reservation existingReservation = reservationRepository.findById(id).orElse(null);
 
         if (existingReservation == null) {
@@ -148,11 +151,13 @@ public class ReservationServiceImpl implements ReservationService {
                 ? flightService.getFlightByFlightNumber(dto.getFlightNumber())
                 : existingReservation.getFlight();
 
+        if (flight.getDepartureDate().isBefore(LocalDateTime.now())) {
+            throw new FlightAlreadyDepartedException("Cannot make a reservation for a flight that has already departed");
+        }
+
         Seat seat = dto.getSeatNumber() != null
                 ? seatService.getSeatBySeatNumberAndFlight(dto.getSeatNumber(), flight)
                 : existingReservation.getSeat();
-
-        // TODO? seat cant be already reserved
 
         existingReservation.setPassenger(passenger);
         existingReservation.setFlight(flight);
@@ -174,6 +179,11 @@ public class ReservationServiceImpl implements ReservationService {
             return;
         }
 
+        if (reservation.getHasDeparted() == true &&
+        reservation.getFlight().getDepartureDate().isBefore(LocalDateTime.now())) {
+            throw new FlightAlreadyDepartedException("You cannot cancel a reservation on a flight that has already departed");
+        }
+
         Seat seat = reservation.getSeat();
 
         if (seat != null) {
@@ -182,5 +192,28 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         reservationRepository.deleteById(id);
+    }
+
+    /**
+     * Mark all reservations for a given flight as "departed".
+     * @param flightNumber flight number to set as "departed"
+     */
+    @Override
+    public List<ReservationDto> markReservationsAsDeparted(String flightNumber) {
+        Flight flight = flightService.getFlightByFlightNumber(flightNumber);
+
+        if (flight == null) {
+            return null;
+        }
+
+        List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
+
+        reservations.forEach(reservation -> {
+            reservation.setHasDeparted(true);
+        });
+
+        List<Reservation> savedReservations = (List<Reservation>) reservationRepository.saveAll(reservations);
+
+        return reservationMapper.toDto(savedReservations);
     }
 }

@@ -3,6 +3,7 @@ package com.katarzynachojniak.staz.flightreservation.flight;
 import com.katarzynachojniak.staz.flightreservation.seat.SeatMapper;
 import org.mapstruct.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,6 +32,10 @@ public interface FlightMapper {
      */
     @AfterMapping
     default void linkSeats(@MappingTarget Flight flight) {
+        if (flight.getSeats() == null) {
+            flight.setSeats(new HashSet<>());
+        }
+
         flight.getSeats().forEach(seat -> seat.setFlight(flight));
     }
 

@@ -1,7 +1,6 @@
 package com.katarzynachojniak.staz.flightreservation.reservation;
 
 import com.katarzynachojniak.staz.flightreservation.passenger.PassengerDto;
-import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -62,7 +61,7 @@ public class ReservationDto implements Serializable {
         return passenger;
     }
 
-    public Boolean hasDeparted() {
+    public Boolean getHasDeparted() {
         return hasDeparted;
     }
 

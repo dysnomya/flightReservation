@@ -64,4 +64,10 @@ public interface ReservationService {
      * @param id the ID of the reservation to delete
      */
     void deleteReservation(Long id);
+
+    /**
+     * Mark all reservations for a given flight as "departed".
+     * @param flightNumber flight number to set as "departed"
+     */
+    List<ReservationDto> markReservationsAsDeparted(String flightNumber);
 }

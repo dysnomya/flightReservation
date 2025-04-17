@@ -93,4 +93,15 @@ public class ReservationController {
 
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Set all reservations of a given flight as departed
+     * @param flightNumber the number of a flight to set all reservations as departed
+     * @return list of flights that got changed
+     */
+    @PutMapping("/departed/{flightNumber}")
+    public List<ReservationDto> getDepartedReservations(@PathVariable String flightNumber) {
+
+        return reservationService.markReservationsAsDeparted(flightNumber);
+    }
 }

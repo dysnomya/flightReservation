@@ -1,6 +1,5 @@
 package com.katarzynachojniak.staz.flightreservation.passenger;
 
-import com.katarzynachojniak.staz.flightreservation.seat.Seat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
