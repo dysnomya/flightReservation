@@ -22,8 +22,6 @@ class FlightServiceImplTest {
     private FlightRepository flightRepository;
     private FlightMapper flightMapper;
     private FlightServiceImpl flightService;
-    private SeatMapper seatMapper;
-    private SeatService seatService;
 
     private FlightDto flightDto;
     private Flight flight;
@@ -35,6 +33,8 @@ class FlightServiceImplTest {
     void setUp() {
         flightRepository = mock(FlightRepository.class);
         flightMapper = mock(FlightMapper.class);
+        SeatMapper seatMapper = mock(SeatMapper.class);
+        SeatService seatService = mock(SeatService.class);
         flightService = new FlightServiceImpl(flightRepository, flightMapper, seatMapper, seatService);
 
         // create example objects

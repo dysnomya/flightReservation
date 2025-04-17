@@ -208,9 +208,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
 
-        reservations.forEach(reservation -> {
-            reservation.setHasDeparted(true);
-        });
+        reservations.forEach(reservation -> reservation.setHasDeparted(true));
 
         List<Reservation> savedReservations = (List<Reservation>) reservationRepository.saveAll(reservations);
 
