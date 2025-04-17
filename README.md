@@ -24,11 +24,9 @@ Aby uruchomić system rezerwacji lotów na swoim komputerze, postępuj według p
      - Odczytywanie lotów: GET /flights
      - Usuwanie rezerwacji: DELETE /reservations/{reservationId}
 
-## Szczegółowe opisy możliwych do użycia endpointów
+## Loty (`/flights`)
 
-### Loty (`/flights`)
-
-#### GET
+### GET
 
 | Endpoint                      | Przykład                                                | Opis                                            |
 |-------------------------------|---------------------------------------------------------|-------------------------------------------------|
@@ -44,7 +42,7 @@ curl http://localhost:8080/flights
 curl http://localhost:8080/flights/NY1001
 ```
 
-#### POST
+### POST
 
 | Endpoint      | Opis                                              |
 |---------------|---------------------------------------------------|
@@ -92,7 +90,7 @@ curl -X POST http://localhost:8080/flights \
 }'
 ```
 
-#### PUT
+### PUT
 
 | Endpoint                       | Opis                                            |
 |--------------------------------|-------------------------------------------------|
@@ -115,7 +113,7 @@ curl -X PUT http://localhost:8080/flights/NY1001 \
   }'
 ```
 
-#### DELETE
+### DELETE
 
 | Endpoint                          | Opis                         |
 |-----------------------------------|------------------------------|
@@ -129,9 +127,9 @@ curl -X DELETE http://localhost:8080/flights/NY1001
 
 
 
-### PASAŻEROWIE (`/passengers`)
+## PASAŻEROWIE (`/passengers`)
 
-#### GET
+### GET
 
 | Endpoint              | Przykład                                            | Opis                                  |
 |-----------------------|-----------------------------------------------------|---------------------------------------|
@@ -147,7 +145,7 @@ curl http://localhost:8080/passengers
 curl http://localhost:8080/passengers/1
 ```
 
-#### POST
+### POST
 
 | Endpoint           | Opis                                                    |
 |--------------------|---------------------------------------------------------|
@@ -175,7 +173,7 @@ curl -X POST http://localhost:8080/passengers \
 }'
 ```
 
-#### PUT
+### PUT
 
 | Endpoint               | Opis                                    |
 |------------------------|-----------------------------------------|
@@ -198,7 +196,7 @@ curl -X PUT http://localhost:8080/passengers/1 \
   }'
 ```
 
-#### DELETE
+### DELETE
 
 | Endpoint                  | Opis                         |
 |---------------------------|------------------------------|
@@ -210,9 +208,9 @@ curl -X DELETE http://localhost:8080/passengers/1
 ```
 
 
-### REZERWACJE
+## REZERWACJE
 
-#### GET
+### GET
 
 | Endpoint                | Przykład                                                | Opis                                           |
 |-------------------------|---------------------------------------------------------|------------------------------------------------|
@@ -228,7 +226,7 @@ curl http://localhost:8080/reservations
 curl http://localhost:8080/reservations/1
 ```
 
-#### POST
+### POST
 
 | Endpoint           | Opis                                                    |
 |--------------------|---------------------------------------------------------|
@@ -256,7 +254,7 @@ curl -X POST http://localhost:8080/reservations \
 }'
 ```
 
-#### PUT
+### PUT
 
 | Endpoint                 | Opis                                                                                                        |
 |--------------------------|-------------------------------------------------------------------------------------------------------------|
@@ -277,7 +275,7 @@ curl -X PUT http://localhost:8080/reservations/RES12345 \
 }'
 ```
 
-#### DELETE
+### DELETE
 
 | Endpoint                    | Opis                                                           |
 |-----------------------------|----------------------------------------------------------------|
