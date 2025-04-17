@@ -169,8 +169,12 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     public void deleteReservation(Long id) {
+        Reservation reservation = getReservationById(id);
+        if (reservation == null) {
+            return;
+        }
 
-        Seat seat = getReservationById(id).getSeat();
+        Seat seat = reservation.getSeat();
 
         if (seat != null) {
             seat.setReservation(null);

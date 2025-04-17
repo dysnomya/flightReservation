@@ -88,13 +88,6 @@ public class Reservation {
         this.hasDeparted = hasDeparted;
     }
 
-    /** TODO
-     * java.lang.NullPointerException: Cannot invoke "com.katarzynachojniak.staz.flightreservation.reservation.Reservation.getSeat()" because the return value of "com.katarzynachojniak.staz.flightreservation.reservation.ReservationServiceImpl.getReservationById(java.lang.Long)" is null
-     *
-     *
-     * -? when trying to delete from the wrong id ? (reservation)
-     */
-
     /**
      * TODO
      * trying to delete flight when its on a reservation
