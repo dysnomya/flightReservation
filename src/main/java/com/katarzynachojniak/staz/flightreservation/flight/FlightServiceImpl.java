@@ -9,8 +9,9 @@ import java.util.List;
 /**
  * Implementation of the {@link FlightService} interface.
  *
- * <p>Provides the actual business logic for managing flights, interacting with the database, and performing CRUD operations.
- * It interacts with the {@link FlightRepository} to handle flight persistence and uses {@link FlightMapper}
+ * <p>Provides the actual business logic for managing flights, interacting with the database, and performing CRUD operations.</p>
+ *
+ * <p>It interacts with the {@link FlightRepository} to handle flight persistence and uses {@link FlightMapper}
  * to map between {@link Flight} and {@link FlightDto} objects.</p>
  */
 @Transactional
@@ -64,6 +65,10 @@ public class FlightServiceImpl implements FlightService {
 
         Flight existingFlight = getFlightByFlightNumber(flightNumber);
 
+        if (existingFlight == null) {
+            return null;
+        }
+
         flightMapper.partialUpdate(dto, existingFlight);
 
         Flight savedFlight = flightRepository.save(existingFlight);
@@ -72,8 +77,6 @@ public class FlightServiceImpl implements FlightService {
 
     /**
      * Deletes a flight by its flight number.
-     *
-     * <p>This method removes the flight from the database using the provided flight number.</p>
      *
      * @param flightNumber the unique identifier for the flight to delete
      */
@@ -91,14 +94,12 @@ public class FlightServiceImpl implements FlightService {
      */
     @Override
     public List<FlightDto> getAllFlights() {
-        List<Flight> flights = flightRepository.findAll();
+        List<Flight> flights = (List<Flight>) flightRepository.findAll();
         return flightMapper.toDto(flights);
     }
 
     /**
      * Retrieves a flight by its flight number and returns it as a {@link FlightDto}.
-     *
-     * <p>If no flight is found with the provided flight number, {@code null} will be returned.</p>
      *
      * @param flightNumber the unique identifier for the flight
      * @return the corresponding flight as a {@link FlightDto}, or {@code null} if no flight is found
@@ -112,8 +113,6 @@ public class FlightServiceImpl implements FlightService {
 
     /**
      * Retrieves a flight entity by its flight number.
-     *
-     * <p>If no flight is found with the provided flight number, this method will return {@code null}.</p>
      *
      * @param flightNumber the unique identifier for the flight
      * @return the corresponding {@link Flight} entity, or {@code null} if no flight is found

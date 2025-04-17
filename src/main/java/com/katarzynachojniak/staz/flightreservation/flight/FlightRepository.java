@@ -21,20 +21,4 @@ public interface FlightRepository extends CrudRepository<Flight, String> {
      * @param flightNumber the flight number of the flight to delete
      */
     void deleteByFlightNumber(String flightNumber);
-
-    /**
-     * Returns all flights as a list.
-     *
-     * @return a list of all flights
-     */
-    @Override
-    List<Flight> findAll();
-
-    /**
-     * Finds a flight by its flight number.
-     *
-     * @param flightNumber the flight number to search by
-     * @return the matching flight, or null if not found
-     */
-    Flight findFlightByFlightNumber(String flightNumber);
 }

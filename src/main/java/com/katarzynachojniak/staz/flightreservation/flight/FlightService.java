@@ -14,7 +14,7 @@ import java.util.List;
  * </ul>
  *
  * <p>This interface defines the core operations but does not contain the actual logic.
- * Implementations should provide the specific behavior.</p>
+ * Implementations should provide specific behavior.</p>
  */
  public interface FlightService {
 

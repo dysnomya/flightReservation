@@ -5,14 +5,33 @@ import java.util.Objects;
 
 /**
  * DTO for {@link Reservation}
+ *
+ * <p>Used for creating and updating reservation data.</p>
  */
 public class ReservationCreateDto implements Serializable {
-    private final String flightNumber;
-    private final String seatNumber;
-    private final Long passengerId;
-    private final boolean hasDeparted;
 
-    public ReservationCreateDto(String flightNumber, String seatNumber, Long passengerId, boolean hasDeparted) {
+    /**
+     * Flight number associated with the reservation. No need to enter whole flight data, just flight Number.
+     */
+    private final String flightNumber;
+
+    /**
+     * Seat number associated with the flight and the reservation. No need to enter whole seat data, just flight Number.
+     */
+    private final String seatNumber;
+
+    /**
+     * Passenger unique identifier. No need to create new passenger, id is enough.
+     */
+
+    private final Long passengerId;
+
+    /**
+     * Boolean indicating whether passenger has departed
+     */
+    private final Boolean hasDeparted;
+
+    public ReservationCreateDto(String flightNumber, String seatNumber, Long passengerId, Boolean hasDeparted) {
         this.flightNumber = flightNumber;
         this.seatNumber = seatNumber;
         this.passengerId = passengerId;
@@ -32,7 +51,7 @@ public class ReservationCreateDto implements Serializable {
         return passengerId;
     }
 
-    public boolean getHasDeparted() {
+    public Boolean getHasDeparted() {
         return hasDeparted;
     }
 

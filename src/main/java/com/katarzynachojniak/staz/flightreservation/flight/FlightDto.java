@@ -11,8 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * DTO for transferring flight data between layers (API, service, etc.).
- * Immutable and serializable.
+ * DTO for {@link Flight}
  */
 public class FlightDto implements Serializable {
 

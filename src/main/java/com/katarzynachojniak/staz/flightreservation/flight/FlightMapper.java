@@ -6,10 +6,11 @@ import org.mapstruct.*;
 import java.util.List;
 
 /**
- * Mapper for converting between Flight and FlightDto.
+ * Mapper for converting between {@link Flight} and {@link FlightDto}.
  * <p>
- * Uses SeatService to resolve Seat entities from seat numbers.
+ * Uses {@link SeatMapper} to resolve Seat entities from seat numbers.
  * Also links seats to their parent flight after mapping (see {@link #linkSeats(Flight)}).
+ * </p>
  */
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING, uses = {SeatMapper.class})
 public interface FlightMapper {

@@ -9,7 +9,15 @@ import java.util.Objects;
  * DTO for {@link com.katarzynachojniak.staz.flightreservation.seat.Seat}
  */
 public class SeatDto implements Serializable {
+
+    /**
+     * Identifier of the seat (e.g., "14B")
+     */
     private final String seatNumber;
+
+    /**
+     * Indicates whether the seat is reserved (true = available)
+     */
     private final Boolean available;
 
     public SeatDto(String seatNumber, Reservation reservation) {

@@ -17,6 +17,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+/**
+ * Implementation of {@link ReservationService} for managing flight reservations.
+ *
+ * <p>This service handles creation, retrieval, updating, and deletion of reservations.
+ * It integrates with services for passengers, flights, and seats to validate and link entities.</p>
+ *
+ * <p>It interacts with {@link ReservationRepository} to handle reservation persistence and uses {@link ReservationMapper}
+ * to map between {@link Reservation} and {@link ReservationDto} objects.</p>
+ */
 @Service
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
@@ -26,6 +36,16 @@ public class ReservationServiceImpl implements ReservationService {
     private final SeatService seatService;
     private final MailService mailService;
 
+    /**
+     * Constructs a new {@code ReservationServiceImpl} with the required dependencies.
+     *
+     * @param reservationRepository the repository for accessing reservation data
+     * @param reservationMapper the mapper for converting between Reservation and ReservationDto
+     * @param passengerService the service for handling passenger-related operations
+     * @param flightService the service for handling flight-related operations
+     * @param seatService the service for handling seat-related operations
+     * @param mailService the service used for sending emails
+     */
     public ReservationServiceImpl(ReservationRepository reservationRepository, ReservationMapper reservationMapper,
                                   PassengerService passengerService, FlightService flightService,
                                   SeatService seatService, MailService mailService) {
@@ -37,6 +57,15 @@ public class ReservationServiceImpl implements ReservationService {
         this.mailService = mailService;
     }
 
+    /**
+     * Creates a new reservation and sends a confirmation email.
+     *
+     * <p>Retrieves related entities using their IDs, creates a {@link Reservation}, saves it,
+     * and sends an email via {@link MailService}.</p>
+     *
+     * @param dto the data needed to create a reservation
+     * @return the created reservation as a {@link ReservationDto}
+     */
     @Override
     public ReservationDto createReservation(ReservationCreateDto dto) {
         Passenger passenger = passengerService.getPassengerById(dto.getPassengerId());
@@ -51,6 +80,12 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationMapper.toDto(savedReservation);
     }
 
+    /**
+     * Retrieves a reservation as a DTO by its ID.
+     *
+     * @param id the ID of the reservation
+     * @return the corresponding {@link ReservationDto}, or {@code null} if not found
+     */
     @Override
     public ReservationDto getReservationDtoById(Long id) {
         Reservation reservation = reservationRepository.findById(id).orElse(null);
@@ -58,11 +93,23 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationMapper.toDto(reservation);
     }
 
+    /**
+     * Retrieves a reservation entity by its ID.
+     *
+     * @param id the ID of the reservation
+     * @return the corresponding {@link Reservation} entity, or {@code null} if not found
+     */
     @Override
     public Reservation getReservationById(Long id) {
         return reservationRepository.findById(id).orElse(null);
     }
 
+
+    /**
+     * Retrieves all reservations.
+     *
+     * @return a list of all reservations as {@link ReservationDto}
+     */
     @Override
     public List<ReservationDto> getAllReservations() {
         List<Reservation> reservations = (List<Reservation>) reservationRepository.findAll();
@@ -71,7 +118,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
 
-    // Updating with no mapper
+    /**
+     * Updates an existing reservation with new values from the DTO.
+     *
+     * <p>Looks up the current reservation by ID and updates fields based on the provided data.
+     * If a new flight or seat is specified, the method verifies and updates the reservation accordingly.</p>
+     *
+     * @param id the ID of the reservation to update
+     * @param dto the new data for the reservation
+     * @return the updated {@link ReservationDto}, or {@code null} if the reservation is not found
+     */
     @Override
     public ReservationDto updateReservation(Long id, ReservationCreateDto dto) { // TODO
         Reservation existingReservation = reservationRepository.findById(id).orElse(null);
@@ -83,8 +139,6 @@ public class ReservationServiceImpl implements ReservationService {
         Passenger passenger = dto.getPassengerId() != null
                 ? passengerService.getPassengerById(dto.getPassengerId())
                 : existingReservation.getPassenger();
-
-        System.out.println(dto.getFlightNumber());
 
         Flight flight = dto.getFlightNumber() != null
                 ? flightService.getFlightByFlightNumber(dto.getFlightNumber())
@@ -100,15 +154,15 @@ public class ReservationServiceImpl implements ReservationService {
         existingReservation.setFlight(flight);
         existingReservation.setSeat(seat);
 
-//        ReservationDto reservationDto = new ReservationDto(null, flightMapper.toDto(flight),
-//                seatMapper.toDto(seat), passengerMapper.toDto(passenger), dto.getHasDeparted());
-//
-//        reservationMapper.partialUpdate(reservationDto, existingReservation);
-
         Reservation savedReservation = reservationRepository.save(existingReservation);
         return reservationMapper.toDto(savedReservation);
     }
 
+    /**
+     * Deletes a reservation by its ID and clears the associated seat (so that it doesn't hold any reference to reservation).
+     *
+     * @param id the ID of the reservation to delete
+     */
     @Override
     public void deleteReservation(Long id) {
 

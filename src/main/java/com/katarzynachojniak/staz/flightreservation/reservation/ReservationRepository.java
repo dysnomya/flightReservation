@@ -2,9 +2,11 @@ package com.katarzynachojniak.staz.flightreservation.reservation;
 
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
+/**
+ * Repository interface for managing {@link Reservation} entities.
+ *
+ * <p>Extends Spring Data's {@link CrudRepository} to provide basic CRUD operations.</p>
+ */
 public interface ReservationRepository extends CrudRepository<Reservation, Long> {
 
-    List<Reservation> getById(Long id);
 }
